@@ -1,0 +1,90 @@
+"""
+" .vimrc 2010-2014
+" Author: Martin Lafreniere (martin.lafreniere@gmail.com)
+" Last Change: 2014-05
+"
+" Free to use, modify or distribute. No warranties.
+"
+"""
+scriptencoding utf-8
+
+set nocompatible
+set cpoptions+=$
+
+" Buffer/File encoding and formatting
+set encoding=utf-8
+set fileencoding=utf-8
+set fileformats=unix,dos,mac
+set fileformat=unix
+
+execute pathogen#infect()
+
+let g:os_is_windows = has('win16') || has('win32') || has('win64')
+
+syntax enable
+filetype plugin on
+filetype indent on
+
+" Vim colors
+set background=dark
+if has('gui_running')
+  colorscheme solarized
+else
+  colorscheme peachpuff
+endif
+
+" Define which vim directory is in use
+if has('win32') || has('win64')
+  let g:vim_home = expand("~/vimfiles")
+else
+  let g:vim_home = expand("~/.vim")
+end
+
+" Set viminfo folder
+let &viminfo = &viminfo.",n".g:vim_home.'/viminfo'
+
+" Status line, line numbering and command line.
+set laststatus=2
+set number
+set cmdheight=2
+set showcmd
+set wildmenu
+
+" Set default whitespacings rules
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+
+" Set default search options
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+
+" Buffer options
+set hidden
+set backspace=1
+
+" Text line options
+set textwidth=160
+set nowrap
+set formatoptions+=cqrn
+set formatoptions-=o
+
+" Working Directory
+set autochdir
+
+" Error handling
+set visualbell t_vb=
+
+" Terminal mouse
+set mouse=a
+
+" Map leader
+let mapleader = ","
+
+if filereadable(g:vim_home."/vimrc.local")
+  runtime vimrc.local
+endif
+

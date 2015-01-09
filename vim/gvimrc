@@ -1,0 +1,26 @@
+"""
+" _gvimrc 2010-2014
+" Author: Martin Lafreniere (martin.lafreniere@gmail.com)
+" Last Change: 2014-05
+"
+" Free to use, modify or distribute. No warranties.
+"
+"""
+scriptencoding utf-8
+
+if !exists('g:gvimrcloaded')
+  set lines=48 columns=100
+  let g:gvimrcloaded = 1
+endif
+
+" Gui options
+set guioptions=egrLtac
+if has('win32') || has('win64')
+  set guifont=Consolas:h10:cANSI
+else
+  set guifont=Bitstream\ Vera\ Sans\ Mono\ 10
+endif
+
+" Mouse options
+set mousehide
+
