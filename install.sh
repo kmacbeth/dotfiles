@@ -26,5 +26,21 @@ function setup_links
   setup_vim
 }
 
+function create_missing_directories
+{
+  [[ ! -e ~/bin ]] && mkdir ~/bin
+}
+
+function install_utilities
+{
+  curl http://beyondgrep.com/ack-2.14-single-file > ~/bin/ack && chmod 0755 ~/bin/ack
+}
+
+# Create missing directory structure
+create_missing_directories
+
+# Setup dotfiles links
 setup_links
 
+# Get bare minimum utilities
+install_utilities

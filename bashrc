@@ -1,5 +1,7 @@
 [[ -z "${PS1}" ]] && return 0
 
+PATH="${HOME}/bin:${PATH}"
+
 ###############################
 ###        HISTORY          ###
 ###############################
@@ -83,12 +85,7 @@ export VISUAL="${EDITOR}"
 function _tovim
 {
   local servername="$1"; shift
-
-  if gvim --serverlist | grep "${servername}" > /dev/null; then
-    gvim --servername "${servername}" --remote "$@"
-  else
-    gvim --servername "${servername}" "$@"
-  fi
+  gvim --servername "${servername}" --remote-silent "$@"
 }
 function vimdev { _tovim 'DEV'   "$@"; }
 function pyvim  { _tovim 'PYVIM' "$@"; }
@@ -99,6 +96,7 @@ function pyvim  { _tovim 'PYVIM' "$@"; }
 alias ux='chmod u+x'
 alias nx='chmod -x+X'
 alias 755='chmod 755'
+alias 644='chmod 644'
 
 ###############################
 ###        SEARCHING        ###
@@ -110,7 +108,7 @@ function search
   local arg
   for arg; do
     echo "====== Result: ${arg} ======"
-    find -type f -exec grep -H "${arg}" {} \;
+    grep "${arg}" $(find -type f)
   done
 }
 

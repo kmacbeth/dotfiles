@@ -1,18 +1,10 @@
-# Readline configuration file
-# Author: Martin Lafreniere
-# Date:   August 2014
-# Just copy or link to ~/.inputc
-
 # Use system-wide readline configuration
 $include /etc/inputrc
 
 # Afterward, we may override some variables and keys
-
-# Readline variables
 set show-all-if-ambiguous on
 set completion-ignore-case on
 
 # Readline key-binding
 "\e[A": history-search-backward
 "\e[B": history-search-forward
-
