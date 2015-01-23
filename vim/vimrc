@@ -44,11 +44,11 @@ end
 let &viminfo = &viminfo.",n".g:vim_home.'/viminfo'
 
 " Status line, line numbering and command line.
-set laststatus=2
 set number
 set cmdheight=2
 set showcmd
 set wildmenu
+set laststatus=2
 
 " Set default whitespacings rules
 set tabstop=4
@@ -73,6 +73,7 @@ set formatoptions+=cqrn
 set formatoptions-=o
 
 " Working Directory
+set directory=~/.backup
 set autochdir
 
 " Error handling

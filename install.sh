@@ -29,6 +29,7 @@ function setup_links
 function create_missing_directories
 {
   [[ ! -e ~/bin ]] && mkdir ~/bin
+  [[ ! -e ~/.backup ]] && mkdir ~/.backup
 }
 
 function install_utilities

@@ -1,4 +1,6 @@
 # Vim files
+.netrwhist
 vim/viminfo
+vim/vimrc.local
 vim/bundle/ack
 
