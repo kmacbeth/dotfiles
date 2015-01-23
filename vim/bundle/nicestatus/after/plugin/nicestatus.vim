@@ -24,6 +24,6 @@ set statusline+=%=%1*\%(\ %{&filetype}\ %)\%0*
 set statusline+=\ :\ %(%{(&fileencoding!=''?&fileencoding:&encoding)}%)
 set statusline+=\ :\ %{&fileformat}
 set statusline+=\ :\ LN\ %L
-set statusline+=\ :\ COL\ %-3.c
-set statusline+=\ :
+set statusline+=\ :\ COL\ %-4.c
+"set statusline+=\ :
 
