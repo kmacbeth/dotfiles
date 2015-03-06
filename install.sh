@@ -34,7 +34,9 @@ function create_missing_directories
 
 function install_utilities
 {
-  curl http://beyondgrep.com/ack-2.14-single-file > ~/bin/ack && chmod 0755 ~/bin/ack
+  if hash curl 2> /dev/null; then
+    curl http://beyondgrep.com/ack-2.14-single-file > ~/bin/ack && chmod 0755 ~/bin/ack
+  fi
 }
 
 # Create missing directory structure
