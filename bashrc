@@ -70,8 +70,10 @@ function colorize
     *)              code="0;39" ;;
   esac
 
-  if [[ -n "${retformat}" ]]; then
+  if [[ "${retformat}" == 'basic' ]]; then
     echo "${code}"
+  elif [[ "${retformat}" == 'prompt' ]]; then
+    echo "\[\033[${code}m\]"
   else
     echo "\033[${code}m"
   fi
@@ -101,16 +103,8 @@ alias 644='chmod 644'
 ###############################
 ###        SEARCHING        ###
 ###############################
-export GREP_OPTIONS='--extended-regexp --color=auto'
-export GREP_COLORS="$(colorize 'bright_green')"
-function search
-{
-  local arg
-  for arg; do
-    echo "====== Result: ${arg} ======"
-    grep "${arg}" $(find -type f)
-  done
-}
+alias grep='grep --color=auto --extended-regexp'
+export GREP_COLORS="$(colorize 'bright_green' 'basic')"
 
 ###############################
 ###           CVS           ###
@@ -120,10 +114,6 @@ function cst
   cvs status 2> /dev/null \
     | grep 'File:' \
     | awk '{ printf("%-30s %s %s\n", $2":", $4, $5) }'
-}
-function cco
-{
-  cvs co -d "$1" "${PROJECT_NAME}/$2"
 }
 
 ###############################
@@ -166,14 +156,15 @@ function _set_prompt
 {
   local retcode="$?" prompt
 
-  PS1="[\h] $(sed -r 's#.*/(.*/.*)#\1#' <<< "${PWD}")"
+  # Show current directory and previous
+   PS1="[\h] $(sed -r 's#.*/(.*/.*)#\1#' <<< "${PWD}")"
   
   if [[ "${retcode}" -eq 0 ]]; then
-    prompt="${prompt}$(colorize 'bright_white')"
+    prompt="${prompt}$(colorize 'bright_white' 'prompt')"
   else
-    prompt="${prompt}$(colorize 'bright_red')"
+    prompt="${prompt}$(colorize 'bright_red' 'prompt')"
   fi
-  prompt="${prompt}\$$(colorize 'default')"
+  prompt="${prompt}\$$(colorize 'default' 'prompt')"
 
   PS1="${PS1} ${prompt} "
 }
