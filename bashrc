@@ -157,16 +157,18 @@ function _set_prompt
   local retcode="$?" prompt
 
   # Show current directory and previous
-   PS1="[\h] $(sed -r 's#.*/(.*/.*)#\1#' <<< "${PWD}")"
+  PS1="[\h] $(sed -r 's#.*/(.*/.*)#\1#' <<< "${PWD}")"
+
+
   
   if [[ "${retcode}" -eq 0 ]]; then
-    prompt="${prompt}$(colorize 'bright_white' 'prompt')"
+    prompt="${prompt}$(colorize 'bright_green' 'prompt')\342\234\223"
   else
-    prompt="${prompt}$(colorize 'bright_red' 'prompt')"
+    prompt="${prompt}$(colorize 'bright_red' 'prompt')\342\234\227"
   fi
-  prompt="${prompt}\$$(colorize 'default' 'prompt')"
+  prompt="${prompt}$(colorize 'default' 'prompt')"
 
-  PS1="${PS1} ${prompt} "
+  PS1="${PS1} ${prompt} \$ "
 }
 PROMPT_COMMAND=_set_prompt
 
