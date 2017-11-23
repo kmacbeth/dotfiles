@@ -20,3 +20,9 @@ syn region  rstLiteralBlock         matchgroup=rstDelimiter
       \ contains=@NoSpell
 ```
 
+### Ubuntu Install ###
+
+```sh
+apt-get install build-essential git
+
+```
