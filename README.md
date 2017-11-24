@@ -23,6 +23,6 @@ syn region  rstLiteralBlock         matchgroup=rstDelimiter
 ### Ubuntu Install ###
 
 ```sh
-apt-get install build-essential git
+apt-get install build-essential git vim python3-pip python3-virtualenv
 
 ```
