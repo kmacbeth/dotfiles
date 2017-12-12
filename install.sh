@@ -46,4 +46,4 @@ create_missing_directories
 setup_links
 
 # Get bare minimum utilities
-install_utilities
+#install_utilities

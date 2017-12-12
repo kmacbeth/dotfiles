@@ -1,4 +1,4 @@
-" Bourne and Bourne Again Shell
+" Bourne and Bourne Again Shell file type settings
 setlocal softtabstop=2
 setlocal shiftwidth=2
 setlocal expandtab

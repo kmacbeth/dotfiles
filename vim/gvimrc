@@ -18,7 +18,7 @@ set guioptions=egrLtac
 if has('win32') || has('win64')
   set guifont=Consolas:h10:cANSI
 else
-  set guifont=Bitstream\ Vera\ Sans\ Mono\ 10
+  set guifont=Bitstream\ Vera\ Sans\ Mono\ 11
 endif
 
 " Mouse options
