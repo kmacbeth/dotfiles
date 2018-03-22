@@ -84,13 +84,12 @@ function colorize
 ###############################
 export EDITOR="vim"
 export VISUAL="${EDITOR}"
-function _tovim
+_tovim()
 {
   local servername="$1"; shift
   gvim --servername "${servername}" --remote-silent "$@"
 }
-function vimdev { _tovim 'DEV'   "$@"; }
-function pyvim  { _tovim 'PYVIM' "$@"; }
+vimdev() { _tovim 'DEV'   "$@"; }
 
 ###############################
 ###       PERMISSIONS       ###
@@ -105,16 +104,6 @@ alias 644='chmod 644'
 ###############################
 alias grep='grep --color=auto --extended-regexp'
 export GREP_COLORS="$(colorize 'bright_green' 'basic')"
-
-###############################
-###           CVS           ###
-###############################
-function cst
-{
-  cvs status 2> /dev/null \
-    | grep 'File:' \
-    | awk '{ printf("%-30s %s %s\n", $2":", $4, $5) }'
-}
 
 ###############################
 ###        UTILITIES        ###
@@ -152,15 +141,13 @@ function extract
 ###############################
 ###      PROMPT THEME       ###
 ###############################
-function _set_prompt
+_set_prompt()
 {
   local retcode="$?" prompt
 
   # Show current directory and previous
   PS1="[\h] $(sed -r 's#.*/(.*/.*)#\1#' <<< "${PWD}")"
 
-
-  
   if [[ "${retcode}" -eq 0 ]]; then
     prompt="${prompt}$(colorize 'bright_green' 'prompt')\342\234\223"
   else

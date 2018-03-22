@@ -1,22 +1,19 @@
 """
-" vimrc 2015
+" init.vim
 " Author: Martin Lafreniere
 "
 " Free to use, modify or distribute. No warranties.
 """
 scriptencoding utf-8
 
-set nocompatible
 set cpoptions+=$
 
 " Define which vim directory is in use
 if has('win32') || has('win64')
-  let g:vim_home = expand("~/vimfiles")
+  let g:vim_home = expand("~/AppData/Local/nvim")
 else
   let g:vim_home = expand("~/.vim")
 end
-
-" execute pathogen#infect()
 
 " Buffer/File encoding and formatting
 set encoding=utf-8
@@ -24,13 +21,10 @@ set fileencoding=utf-8
 set fileformats=unix,dos,mac
 set fileformat=unix
 
-" syntax enable
-" filetype plugin indent on
-
-" Plugin
+" Plugins
 call plug#begin(g:vim_home . "/plugged")
 
-Plug 'altercation/vim-colors-solarized'
+Plug 'JulioJu/neovim-qt-colors-solarized-truecolor-only'
 Plug 'vim-airline/vim-airline'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/nerdtree'
@@ -39,16 +33,9 @@ Plug 'godlygeek/tabular'
 
 call plug#end()
 
-" Vim colors
+" " Vim colors
 set background=dark
-if has('gui_running')
-  colorscheme solarized
-else
-  colorscheme peachpuff
-endif
-
-" Set viminfo folder
-let &viminfo = &viminfo.",n".g:vim_home.'/viminfo'
+colorscheme solarized_nvimqt
 
 " Status line, line numbering and command line.
 set number
@@ -82,11 +69,7 @@ set formatoptions+=cqrn
 set formatoptions-=o
 
 " Working Directory
-if has('win32') || has('win64')
-  set directory=~/_backup
-else
-  set directory=~/.backup
-endif
+set directory=~/_backup
 set autochdir
 
 " Error handling
@@ -104,3 +87,6 @@ if filereadable(g:vim_home."/vimrc.local")
   runtime vimrc.local
 endif
 
+" Neovim QT GuiFont command
+command! -nargs=? GuiFont call rpcnotify(0, 'Gui', 'SetFont', "<args>") | let g:GuiFont = "<args>"
+GuiFont Consolas:h11:cANSI
