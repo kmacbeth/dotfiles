@@ -12,7 +12,7 @@ set cpoptions+=$
 if has('win32') || has('win64')
   let g:vim_home = expand("~/AppData/Local/nvim")
 else
-  let g:vim_home = expand("~/.vim")
+  let g:vim_home = expand("~/.config/nvim")
 end
 
 " Buffer/File encoding and formatting
@@ -35,7 +35,7 @@ call plug#end()
 
 " " Vim colors
 set background=dark
-colorscheme solarized_nvimqt
+colorscheme peachpuff
 
 " Status line, line numbering and command line.
 set number
@@ -69,7 +69,7 @@ set formatoptions+=cqrn
 set formatoptions-=o
 
 " Working Directory
-set directory=~/_backup
+set directory=~/.config/backup
 set autochdir
 
 " Error handling

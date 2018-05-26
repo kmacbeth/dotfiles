@@ -1,0 +1,2 @@
+colorscheme solarized_nvimqt
+set background=dark
