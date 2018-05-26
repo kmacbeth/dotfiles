@@ -22,9 +22,9 @@ shell_setup()
   ln -sf "${BASE_DIR}/inputrc"      "${TARGET_DIR}/.inputrc"
   ln -sf "${BASE_DIR}/bashrc"       "${TARGET_DIR}/.bashrc"
   ln -sf "${BASE_DIR}/bash_profile" "${TARGET_DIR}/.bash_profile"
-  
-  touch "${BASE_DIR}/.bashrc.extras"
-  
+
+  touch "${TARGET_DIR}/.bashrc.extras"
+
   not_exists "curl" || sudo apt-get -y install curl
 }
 
