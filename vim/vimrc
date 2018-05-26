@@ -99,6 +99,29 @@ set mouse=a
 nnoremap <space> <nop>
 let mapleader = " "
 
+" Configure NETRW
+if has('win32') || has('win64')
+  let g:netrw_scp_cmd = "pscp -scp"
+  let g:netrw_sftp_cmd = "psftp"
+endif
+
+" Configure AIRLINE
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_left_sep = '►'
+let g:airline_right_sep = '◄'
+
+
+" Configure RAINBOW PARENS
+let g:rainbow_active = 1
+let g:rainbow_conf = {}
+let g:rainbow_conf['guifgs']      = ['#b58900', '#268bd2', '#cb4b16', '#d33682']
+let g:rainbow_conf['ctermfgs']    = ['3', '4', '9', '5']
+let g:rainbow_conf['operators']   = '_,_'
+let g:rainbow_conf['parentheses'] = ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold']
+let g:rainbow_conf['separately']  = { '*': {} }
+
 " Vim settings based on workstation
 if filereadable(g:vim_home."/vimrc.local")
   runtime vimrc.local
