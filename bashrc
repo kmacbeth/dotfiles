@@ -144,6 +144,7 @@ function extract
 _set_prompt()
 {
   local retcode="$?" prompt
+  local gitbranch
 
   # Show current directory and previous
   PS1="[\h] $(sed -r 's#.*/(.*/.*)#\1#' <<< "${PWD}")"
@@ -155,7 +156,11 @@ _set_prompt()
   fi
   prompt="${prompt}$(colorize 'default' 'prompt')"
 
-  PS1="${PS1} ${prompt} \$ "
+  gitbranch="$(colorize 'bright_yellow' 'prompt')"
+  gitbranch="${gitbranch}$(__git_ps1 ' (%s)')"
+  gitbranch="${gitbranch}$(colorize 'default' 'prompt')"
+
+  PS1="${PS1}${gitbranch} ${prompt} \$ "
 }
 PROMPT_COMMAND=_set_prompt
 
