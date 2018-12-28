@@ -1,8 +1,0 @@
-# Vim files
-.netrwhist
-vim/autoload
-vim/ftplugin
-vim/plugged
-vim/viminfo
-vim/vimrc.local
-

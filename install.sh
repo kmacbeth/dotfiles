@@ -1,47 +1,72 @@
 #!/usr/bin/env bash
-#--------------------------------------------------------------------------------
-# Install my dotfiles
-#
-# @note: Make sure that if behind a proxy to define HTTP_PROXY or HTTPS_PROXY.
-#--------------------------------------------------------------------------------
-BASE_DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
-TARGET_DIR="${TARGET_DIR:-${HOME}}"
 
-not_exists()
-{
-  command -v "$1" > /dev/null
-  return $?
+# Standardize variable
+XDG_CONFIG_HOME="${HOME}/.config"
+XDG_DATA_HOME="${HOME}/.local"
+
+# Installers
+INSTALLERS=(installers/*.sh)
+INSTALLERS_SIZE=${#INSTALLERS[@]}
+INSTALLERS_NAME=()
+
+INSTALL_STATUS=()
+INSTALL_STATUS+=("\e[32m\342\234\223\e[39m")
+INSTALL_STATUS+=("\e[31m\342\234\227\e[39m")
+INSTALL_STATUS+=("\e[33m\342\234\223\e[39m")
+
+remove_shell_extension() {
+  local filename="$1"
+  echo "${filename%*.sh}"
 }
 
-source ${BASE_DIR}/scripts/editor.sh
-
-shell_setup()
-{
-  rm -f "${BASE_DIR}/.inputrc" "${BASE_DIR}/.bashrc" "${BASE_DIR}/.bash_profile"
-
-  ln -sf "${BASE_DIR}/inputrc"      "${TARGET_DIR}/.inputrc"
-  ln -sf "${BASE_DIR}/bashrc"       "${TARGET_DIR}/.bashrc"
-  ln -sf "${BASE_DIR}/bash_profile" "${TARGET_DIR}/.bash_profile"
-
-  touch "${TARGET_DIR}/.bashrc.extras"
-
-  not_exists "curl" || sudo apt-get -y install curl
+extract_file_basename() {
+  local filename="$1"
+  echo "${filename##*/}"
 }
 
+source_installers() {
+  local installer=""
 
-main()
-{
-  echo "TARGET: ${TARGET_DIR}"
-  echo "SOURCE: ${BASE_DIR}"
+  for installer in ${INSTALLERS[@]}; do
+    source ${installer}
+    INSTALLERS_NAME+=("$(remove_shell_extension "$(extract_file_basename "${installer}")")")
+  done
+}
 
-  if [[ ! -d "${TARGET_DIR}" ]]; then
-    mkdir "${TARGET_DIR}"
+select_installer() {
+  local installer_name=""
+  local installer_info=""
+  local installer_status=""
+
+  for installer_index in ${!INSTALLERS[@]}; do
+    installer_name="${INSTALLERS_NAME[${installer_index}]}"
+    installer_info="$(${installer_name}_get_install_info)"
+    installer_status="$?"
+    printf "%2u) Install %-30s [%b]\n" \
+  	  "$((${installer_index} + 1))" "${installer_info}" "${INSTALL_STATUS[${installer_status}]}"
+  done
+
+  echo -n "Select> "
+  read user_input
+
+  if [[ "${user_input}" =~ ^[1-9][0-9]*$ ]]; then
+    # Reduce to index installer name array
+    (( user_input-- ))
+    if (( user_input < INSTALLERS_SIZE )); then
+      installer_name="${INSTALLERS_NAME[${user_input}]}"
+      ${installer_name}_install
+    fi
   fi
-
-  shell_setup
-  editors_setup
 }
 
+main() {
+
+  mkdir -p ~/.backup
+
+  source_installers
+  select_installer
+
+}
 
 main "$@"
 

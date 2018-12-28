@@ -1,6 +1,7 @@
 """
-" vimrc 2015
+" File: vimrc
 " Author: Martin Lafreniere
+" Data: 2018-12-26
 "
 " Free to use, modify or distribute. No warranties.
 """
@@ -16,8 +17,6 @@ else
   let g:vim_home = expand("~/.vim")
 end
 
-" execute pathogen#infect()
-
 " Buffer/File encoding and formatting
 set encoding=utf-8
 set fileencoding=utf-8
@@ -25,28 +24,11 @@ set fileformats=unix,dos,mac
 set fileformat=unix
 
 " syntax enable
-" filetype plugin indent on
-
-" Plugin
-call plug#begin(g:vim_home . "/plugged")
-
-Plug 'altercation/vim-colors-solarized'
-Plug 'vim-airline/vim-airline'
-Plug 'jlanzarotta/bufexplorer'
-Plug 'scrooloose/nerdtree'
-Plug 'luochen1990/rainbow'
-Plug 'godlygeek/tabular'
-Plug 'Valloric/YouCompleteMe'
-
-call plug#end()
+filetype plugin indent on
 
 " Vim colors
 set background=dark
-if has('gui_running')
-  colorscheme solarized
-else
-  colorscheme peachpuff
-endif
+colorscheme peachpuff
 
 " Set viminfo folder
 let &viminfo = &viminfo.",n".g:vim_home.'/viminfo'
@@ -99,35 +81,3 @@ set mouse=a
 " Map leader
 nnoremap <space> <nop>
 let mapleader = " "
-
-" Configure NETRW
-if has('win32') || has('win64')
-  let g:netrw_scp_cmd = "pscp -scp"
-  let g:netrw_sftp_cmd = "psftp"
-endif
-
-" Configure AIRLINE
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline_left_sep = '►'
-let g:airline_right_sep = '◄'
-
-
-" Configure RAINBOW PARENS
-let g:rainbow_active = 1
-let g:rainbow_conf = {}
-let g:rainbow_conf['guifgs']      = ['#b58900', '#268bd2', '#cb4b16', '#d33682']
-let g:rainbow_conf['ctermfgs']    = ['3', '4', '9', '5']
-let g:rainbow_conf['operators']   = '_,_'
-let g:rainbow_conf['parentheses'] = ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold']
-let g:rainbow_conf['separately']  = { 'cmake': 0 }
-
-" YouCompleteMe
-let g:ycm_autoclose_preview_window_after_completion = 1
-
-" Vim settings based on workstation
-if filereadable(g:vim_home."/vimrc.local")
-  runtime vimrc.local
-endif
-

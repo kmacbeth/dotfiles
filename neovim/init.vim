@@ -1,6 +1,7 @@
 """
-" init.vim
+" File: init.vim
 " Author: Martin Lafreniere
+" Date: 2018-12-26
 "
 " Free to use, modify or distribute. No warranties.
 """
@@ -10,9 +11,9 @@ set cpoptions+=$
 
 " Define which vim directory is in use
 if has('win32') || has('win64')
-  let g:vim_home = expand("~/AppData/Local/nvim")
+  let g:neovim_home = expand("~/AppData/Local/nvim")
 else
-  let g:vim_home = expand("~/.config/nvim")
+  let g:neovim_home = expand("~/.config/nvim")
 end
 
 " Buffer/File encoding and formatting
@@ -22,14 +23,15 @@ set fileformats=unix,dos,mac
 set fileformat=unix
 
 " Plugins
-call plug#begin(g:vim_home . "/plugged")
+call plug#begin(g:neovim_home . "/plugged")
 
-Plug 'JulioJu/neovim-qt-colors-solarized-truecolor-only'
+"Plug 'JulioJu/neovim-qt-colors-solarized-truecolor-only'
 Plug 'vim-airline/vim-airline'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/nerdtree'
 Plug 'luochen1990/rainbow'
 Plug 'godlygeek/tabular'
+Plug 'Valloric/YouCompleteMe'
 
 call plug#end()
 
@@ -83,10 +85,7 @@ nnoremap <space> <nop>
 let mapleader = " "
 
 " Vim settings based on workstation
-if filereadable(g:vim_home."/vimrc.local")
-  runtime vimrc.local
+if filereadable(g:neovim_home."/init_plugins.vim")
+  runtime init_plugins.vim
 endif
 
-" Neovim QT GuiFont command
-command! -nargs=? GuiFont call rpcnotify(0, 'Gui', 'SetFont', "<args>") | let g:GuiFont = "<args>"
-GuiFont Consolas:h11:cANSI
