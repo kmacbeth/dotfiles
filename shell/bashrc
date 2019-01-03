@@ -84,12 +84,6 @@ function colorize
 ###############################
 export EDITOR="vim"
 export VISUAL="${EDITOR}"
-_tovim()
-{
-  local servername="$1"; shift
-  gvim --servername "${servername}" --remote-silent "$@"
-}
-vimdev() { _tovim 'DEV'   "$@"; }
 
 ###############################
 ###       PERMISSIONS       ###
