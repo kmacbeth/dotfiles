@@ -25,13 +25,13 @@ set fileformat=unix
 " Plugins
 call plug#begin(g:neovim_home . "/plugged")
 
-"Plug 'JulioJu/neovim-qt-colors-solarized-truecolor-only'
 Plug 'vim-airline/vim-airline'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/nerdtree'
 Plug 'luochen1990/rainbow'
 Plug 'godlygeek/tabular'
 Plug 'Valloric/YouCompleteMe'
+Plug 'sakhnik/nvim-gdb'
 
 call plug#end()
 
