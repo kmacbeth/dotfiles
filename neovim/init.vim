@@ -29,15 +29,35 @@ Plug 'vim-airline/vim-airline'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/nerdtree'
 Plug 'luochen1990/rainbow'
-Plug 'godlygeek/tabular'
-Plug 'Valloric/YouCompleteMe'
-Plug 'sakhnik/nvim-gdb'
+
+" Neovim Complete Manager 2
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
+
+Plug 'ncm2/ncm2-vim' | Plug 'Shougo/neco-vim'
+
+Plug 'ncm2/ncm2-pyclang'
+Plug 'vim-scripts/a.vim'
+Plug 'Shougo/neoinclude.vim'
+Plug 'octol/vim-cpp-enhanced-highlight', { 'merged': 0 }
+
+Plug 'ncm2/ncm2-jedi'
+
+" Linting & Syntax Checking
+Plug 'neomake/neomake'
+
+" Themes
+Plug 'morhetz/gruvbox'
+
 
 call plug#end()
 
 " " Vim colors
 set background=dark
-colorscheme peachpuff
+colorscheme gruvbox
 
 " Status line, line numbering and command line.
 set number

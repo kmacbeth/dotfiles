@@ -26,5 +26,25 @@ let g:rainbow_conf['parentheses'] = ['start=/(/ end=/)/ fold', 'start=/\[/ end=/
 let g:rainbow_conf['separately']  = { 'cmake': 0, 'xml': 0 }
 
 " YouCompleteMe
-let g:ycm_autoclose_preview_window_after_completion = 1
+"let g:ycm_autoclose_preview_window_after_completion = 1
 
+" Neovim Completion Manager
+set completeopt=noinsert,menuone
+
+augroup vimrc
+autocmd BufEnter * call ncm2#enable_for_buffer()
+autocmd TextChangedI * call ncm2#auto_trigger()
+augroup END
+
+
+" NCM2 PYCLANG
+let g:ncm2_pyclang#library_path = '/usr/lib/x86_64-linux-gnu/libclang-8.so.1'
+let g:ncm2_pyclang#database_path = ['compile_commands.json', 'build/compile_commands.json']
+
+autocmd FileType c,cpp nnoremap <buffer> gd :<c-u>call ncm2_pyclang#goto_declaration()<cr>
+
+" NEOMAKE
+call neomake#configure#automake('nrwi', 500)
+
+" a.vim
+nnoremap <silent> <Leader>a :A<CR>
