@@ -137,8 +137,9 @@ function extract
 ###############################
 _set_prompt()
 {
-  local retcode="$?" prompt
-  local gitbranch
+  local retcode="$?" prompt=""
+  local gitbranch=""
+  local pyenv=""
 
   # Show current directory and previous
   PS1="[\h] $(sed -r 's#.*/(.*/.*)#\1#' <<< "${PWD}")"
@@ -151,12 +152,22 @@ _set_prompt()
   prompt="${prompt}$(colorize 'default' 'prompt')"
 
   gitbranch="$(colorize 'bright_yellow' 'prompt')"
-  gitbranch="${gitbranch}$(__git_ps1 ' (%s)')"
+  gitbranch="${gitbranch}$(__git_ps1 '(git:%s)')"
   gitbranch="${gitbranch}$(colorize 'default' 'prompt')"
 
-  PS1="${PS1}${gitbranch} ${prompt} \$ "
+  if [[ -n "${VIRTUAL_ENV}" ]]; then
+    pyenv="$(colorize 'bright_cyan' 'prompt')"
+    pyenv="${pyenv}(py:${VIRTUAL_ENV##*/})"
+    pyenv="${pyenv}$(colorize 'default' 'prompt')"
+  else
+    pyenv=""
+  fi
+
+  PS1="${gitbranch}${pyenv}\n${PS1} ${prompt} \$ "
 }
 PROMPT_COMMAND=_set_prompt
+
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 ###############################
 ###         SOURCE          ###
