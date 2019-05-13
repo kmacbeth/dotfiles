@@ -25,15 +25,9 @@ let g:rainbow_conf['operators']   = '_,_'
 let g:rainbow_conf['parentheses'] = ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold']
 let g:rainbow_conf['separately']  = { 'cmake': 0, 'xml': 0 }
 
-" YouCompleteMe
-"let g:ycm_autoclose_preview_window_after_completion = 1
-
 " Neovim Completion Manager
-set completeopt=noinsert,menuone
-
 augroup vimrc
 autocmd BufEnter * call ncm2#enable_for_buffer()
-autocmd TextChangedI * call ncm2#auto_trigger()
 augroup END
 
 
@@ -48,3 +42,10 @@ call neomake#configure#automake('nrwi', 500)
 
 " a.vim
 nnoremap <silent> <Leader>a :A<CR>
+
+" TAB Completion
+set shortmess+=c
+
+inoremap <expr> <CR> (pumvisible() ? "\<c-y>" : "\<CR>")
+inoremap <expr> <tab> (pumvisible() ? "\<c-n>" : "\<tab>")
+inoremap <expr> <s-tab> (pumvisible() ? "\<C-p>" : "\<s-tab>")

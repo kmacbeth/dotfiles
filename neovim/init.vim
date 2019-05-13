@@ -63,8 +63,11 @@ colorscheme gruvbox
 set number
 set cmdheight=2
 set showcmd
-set wildmenu
 set laststatus=2
+set wildmenu
+
+" Completion
+set completeopt=noinsert,menuone,noselect
 
 " Set default whitespacings rules
 set tabstop=4
