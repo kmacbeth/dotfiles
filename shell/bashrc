@@ -1,6 +1,6 @@
 [[ -z "${PS1}" ]] && return 0
 
-PATH="${HOME}/bin:${PATH}"
+PATH="${HOME}/bin:${PATH}:${HOME}/.local/bin"
 
 ###############################
 ###        HISTORY          ###

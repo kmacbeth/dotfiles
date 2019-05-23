@@ -22,45 +22,9 @@ set fileencoding=utf-8
 set fileformats=unix,dos,mac
 set fileformat=unix
 
-" Plugins
-call plug#begin(g:neovim_home . "/plugged")
-
-" File and buffers
-Plug 'jlanzarotta/bufexplorer'
-Plug 'scrooloose/nerdtree'
-
-" General Completion
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
-Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
-
-" VIM script
-Plug 'ncm2/ncm2-vim' | Plug 'Shougo/neco-vim'
-
-" C/C++
-Plug 'ncm2/ncm2-pyclang'
-Plug 'Shougo/neoinclude.vim'
-Plug 'octol/vim-cpp-enhanced-highlight', { 'merged': 0 }
-
-" Python
-Plug 'ncm2/ncm2-jedi'
-
-" Linting & Syntax Checking
-Plug 'neomake/neomake'
-
-" Themes
-Plug 'morhetz/gruvbox'
-Plug 'vim-airline/vim-airline'
-Plug 'luochen1990/rainbow'
-
-
-call plug#end()
-
-" " Vim colors
+" Vim colors
 set background=dark
-colorscheme gruvbox
+colorscheme peachpuff
 
 " Status line, line numbering and command line.
 set number
