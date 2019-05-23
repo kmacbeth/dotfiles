@@ -1,7 +1,7 @@
 """
 " File: init.vim
 " Author: Martin Lafreniere
-" Date: 2018-12-26
+" Date: 2019-05-22
 "
 " Free to use, modify or distribute. No warranties.
 """
@@ -25,25 +25,26 @@ set fileformat=unix
 " Plugins
 call plug#begin(g:neovim_home . "/plugged")
 
-Plug 'vim-airline/vim-airline'
+" File and buffers
 Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/nerdtree'
-Plug 'luochen1990/rainbow'
 
-" Neovim Complete Manager 2
+" General Completion
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2'
 Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
 Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
 
+" VIM script
 Plug 'ncm2/ncm2-vim' | Plug 'Shougo/neco-vim'
 
+" C/C++
 Plug 'ncm2/ncm2-pyclang'
-Plug 'vim-scripts/a.vim'
 Plug 'Shougo/neoinclude.vim'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'merged': 0 }
 
+" Python
 Plug 'ncm2/ncm2-jedi'
 
 " Linting & Syntax Checking
@@ -51,6 +52,8 @@ Plug 'neomake/neomake'
 
 " Themes
 Plug 'morhetz/gruvbox'
+Plug 'vim-airline/vim-airline'
+Plug 'luochen1990/rainbow'
 
 
 call plug#end()
@@ -68,6 +71,7 @@ set wildmenu
 
 " Completion
 set completeopt=noinsert,menuone,noselect
+set shortmess+=c
 
 " Set default whitespacings rules
 set tabstop=4
