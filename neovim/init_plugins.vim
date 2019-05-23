@@ -25,8 +25,17 @@ let g:rainbow_conf['operators']   = '_,_'
 let g:rainbow_conf['parentheses'] = ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold']
 let g:rainbow_conf['separately']  = { 'cmake': 0, 'xml': 0 }
 
-" Deoplete
-let g:deoplete#enable_at_startup = 1
+" Neovim Completion Manager
+augroup vimrc
+autocmd BufEnter * call ncm2#enable_for_buffer()
+augroup END
+
+
+" NCM2 PYCLANG
+let g:ncm2_pyclang#library_path = '/usr/lib/x86_64-linux-gnu/libclang-8.so.1'
+let g:ncm2_pyclang#database_path = ['compile_commands.json', 'build/compile_commands.json']
+
+autocmd FileType c,cpp nnoremap <buffer> gd :<c-u>call ncm2_pyclang#goto_declaration()<cr>
 
 " NEOMAKE
 call neomake#configure#automake('nrwi', 500)

@@ -30,18 +30,21 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/nerdtree'
 Plug 'luochen1990/rainbow'
 
-" Deoplete
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/neco-syntax'
-Plug 'Shougo/neco-vim'
-Plug 'Shougo/deoplete-clangx'
-Plug 'Shougo/neoinclude.vim'
-Plug 'deoplete-plugins/deoplete-jedi'
+" Neovim Complete Manager 2
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
 
+Plug 'ncm2/ncm2-vim' | Plug 'Shougo/neco-vim'
+
+Plug 'ncm2/ncm2-pyclang'
 Plug 'vim-scripts/a.vim'
+Plug 'Shougo/neoinclude.vim'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'merged': 0 }
 
-"Plug 'ncm2/ncm2-jedi'
+Plug 'ncm2/ncm2-jedi'
 
 " Linting & Syntax Checking
 Plug 'neomake/neomake'
