@@ -38,7 +38,10 @@ Plug 'Shougo/deoplete-clangx'
 Plug 'Shougo/neoinclude.vim'
 Plug 'deoplete-plugins/deoplete-jedi'
 
+Plug 'vim-scripts/a.vim'
 Plug 'octol/vim-cpp-enhanced-highlight', { 'merged': 0 }
+
+"Plug 'ncm2/ncm2-jedi'
 
 " Linting & Syntax Checking
 Plug 'neomake/neomake'
