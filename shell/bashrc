@@ -45,7 +45,7 @@ fi
 ###############################
 ###         COLORS          ###
 ###############################
-function colorize
+colorize()
 {
   local colorname="$1" retformat="$2" code="0"
 
@@ -58,7 +58,7 @@ function colorize
     blue)           code="0;34" ;;
     magenta)        code="0;35" ;;
     cyan)           code="0;36" ;;
-    bright_white)   code="0;37" ;;
+    white)          code="0;37" ;;
     bright_black)   code="1;30" ;;
     bright_red)     code="1;31" ;;
     bright_green)   code="1;32" ;;
@@ -70,14 +70,14 @@ function colorize
     *)              code="0;39" ;;
   esac
 
-  if [[ "${retformat}" == 'basic' ]]; then
-    echo "${code}"
-  elif [[ "${retformat}" == 'prompt' ]]; then
-    echo "\[\033[${code}m\]"
-  else
-    echo "\033[${code}m"
-  fi
+  case "${retformat}" in
+    'b') echo "${code}"              ;;
+    'p') echo "\\[\\033[${code}m\\]" ;;
+    's') echo "\\033[${code}m"       ;;
+  esac
 }
+
+_c() { colorize "$@"; }
 
 ###############################
 ###         EDITORS         ###
@@ -97,74 +97,47 @@ alias 644='chmod 644'
 ###        SEARCHING        ###
 ###############################
 alias grep='grep --color=auto --extended-regexp'
-export GREP_COLORS="$(colorize 'bright_green' 'basic')"
-
-###############################
-###        UTILITIES        ###
-###############################
-alias k='cat'
-alias kat='cat --show-all'
-function extract
-{
-  case "$1" in
-    *.tar.bz2)
-      tar xvjf "$1"   ;;
-    *.tar.gz) 
-      tar xvzf "$1"   ;;
-    *.bz2)    
-      bunzip2 "$1"    ;;
-    *.rar)    
-      unrar x "$1"    ;;
-    *.gz)     
-      gunzip "$1"     ;;
-    *.tar)    
-      tar xvf "$1"    ;;
-    *.tbz2)   
-      tar xvjf "$1"   ;;
-    *.tgz)    
-      tar xvzf "$1"   ;;
-    *.zip)    
-      unzip "$1"      ;;
-    *.Z)      
-      uncompress "$1" ;;
-    *)        
-      echo "Error: cannot extract '$1' via extract" >&2 ;;
-  esac
-}
+GREP_COLORS="$(colorize 'bright_green' 'b')"
+export GREP_COLORS
 
 ###############################
 ###      PROMPT THEME       ###
 ###############################
+_prompt_surround()
+{
+  local color=$1; shift
+
+  echo "$(_c "${color}" 'p')$*$(_c 'default' 'p')"
+}
+
 _set_prompt()
 {
-  local retcode="$?" prompt=""
-  local gitbranch=""
-  local pyenv=""
+  local status_code="$?"
+  local git_branch python_venv
 
-  # Show current directory and previous
-  PS1="[\h] $(sed -r 's#.*/(.*/.*)#\1#' <<< "${PWD}")"
+  git_branch="$(__git_ps1 '%s')"
+  python_venv="${VIRTUAL_ENV##*/}"
 
-  if [[ "${retcode}" -eq 0 ]]; then
-    prompt="${prompt}$(colorize 'bright_green' 'prompt')\342\234\223"
-  else
-    prompt="${prompt}$(colorize 'bright_red' 'prompt')\342\234\227"
+  PS1=""
+
+  PS1="[ "
+  if [[ -n "${git_branch}" ]]; then
+    PS1="${PS1}$(_prompt_surround 'bright_yellow' "${git_branch}") | "
   fi
-  prompt="${prompt}$(colorize 'default' 'prompt')"
-
-  gitbranch="$(colorize 'bright_yellow' 'prompt')"
-  gitbranch="${gitbranch}$(__git_ps1 '(git:%s)')"
-  gitbranch="${gitbranch}$(colorize 'default' 'prompt')"
-
-  if [[ -n "${VIRTUAL_ENV}" ]]; then
-    pyenv="$(colorize 'bright_cyan' 'prompt')"
-    pyenv="${pyenv}(py:${VIRTUAL_ENV##*/})"
-    pyenv="${pyenv}$(colorize 'default' 'prompt')"
-  else
-    pyenv=""
+  if [[ -n "${python_venv}" ]]; then
+    PS1="${PS1}py:$(_prompt_surround 'bright_blue' "${python_venv}") | "
   fi
-
-  PS1="${gitbranch}${pyenv}\n${PS1} ${prompt} \$ "
+  PS1="${PS1}\\w"
+  PS1="${PS1} ]\\n"
+  PS1="${PS1}${USER}@${HOSTNAME} "
+  if [[ "${status_code}" == 0 ]]; then
+    PS1="${PS1}$(_prompt_surround 'bright_green' \\342\\234\\223) "
+  else
+    PS1="${PS1}$(_prompt_surround 'bright_red'   \\342\\234\\227) "
+  fi
+  PS1="${PS1}\\$ "
 }
+
 PROMPT_COMMAND=_set_prompt
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
