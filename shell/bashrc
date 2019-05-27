@@ -103,39 +103,96 @@ export GREP_COLORS
 ###############################
 ###      PROMPT THEME       ###
 ###############################
-_prompt_surround()
+_REGEX_VERSION='([0-9]+\.){2}[0-9]+'
+
+_prompt_color()
 {
   local color=$1; shift
 
   echo "$(_c "${color}" 'p')$*$(_c 'default' 'p')"
 }
 
+_prompt_git_branch()
+{
+  __git_ps1 '%s' | grep '.{,20}'
+}
+
+_prompt_python_version()
+{
+  if command -v python3 > /dev/null; then
+    python3 --version 2>&1 | grep -oE "${_REGEX_VERSION}"
+  else
+    python --version 2>&1 | grep -oE "${_REGEX_VERSION}"
+  fi
+}
+
+_prompt_gcc_version()
+{
+  if command -v gcc > /dev/null; then
+    gcc --version | grep -oE "${_REGEX_VERSION}" | uniq
+  fi
+}
+
+_prompt_clang_version()
+{
+  if command -v clang > /dev/null; then
+    clang --version | grep -oE "${_REGEX_VERSION}" | uniq
+  fi
+}
+
 _set_prompt()
 {
   local status_code="$?"
-  local git_branch python_venv
+  local git_branch python_ver python_venv
 
-  git_branch="$(__git_ps1 '%s')"
+  git_branch="$(_prompt_git_branch)"
+  python_ver="$(_prompt_python_version)"
   python_venv="${VIRTUAL_ENV##*/}"
-
-  PS1=""
+  gcc_ver="$(_prompt_gcc_version)"
+  clang_ver="$(_prompt_clang_version)"
 
   PS1="[ "
+
+  PS1="${PS1}$(_prompt_color bright_white 'git') "
   if [[ -n "${git_branch}" ]]; then
-    PS1="${PS1}$(_prompt_surround 'bright_yellow' "${git_branch}") | "
-  fi
-  if [[ -n "${python_venv}" ]]; then
-    PS1="${PS1}py:$(_prompt_surround 'bright_blue' "${python_venv}") | "
-  fi
-  PS1="${PS1}\\w"
-  PS1="${PS1} ]\\n"
-  PS1="${PS1}${USER}@${HOSTNAME} "
-  if [[ "${status_code}" == 0 ]]; then
-    PS1="${PS1}$(_prompt_surround 'bright_green' \\342\\234\\223) "
+    PS1="${PS1}$(_prompt_color green "${git_branch}") | "
   else
-    PS1="${PS1}$(_prompt_surround 'bright_red'   \\342\\234\\227) "
+    PS1="${PS1}$(_prompt_color yellow 'N/A') | "
   fi
-  PS1="${PS1}\\$ "
+
+  PS1="${PS1}$(_prompt_color bright_white 'Python') "
+  PS1="${PS1}$(_prompt_color bright_blue "${python_ver}") "
+  if [[ -n "${python_venv}" ]]; then
+    PS1="${PS1}$(_prompt_color cyan "${python_venv}") | "
+  else
+    PS1="${PS1}$(_prompt_color yellow 'system') | "
+  fi
+
+  PS1="${PS1}$(_prompt_color bright_white 'GCC') "
+  if [[ -n "${gcc_ver}" ]]; then
+    PS1="${PS1}$(_prompt_color bright_blue "${gcc_ver}") | "
+  else
+    PS1="${PS1}$(_prompt_color yellow 'N/A') | "
+  fi
+
+  PS1="${PS1}$(_prompt_color bright_white 'clang') "
+  if [[ -n "${clang_ver}" ]]; then
+    PS1="${PS1}$(_prompt_color bright_blue "${clang_ver}") | "
+  else
+    PS1="${PS1}$(_prompt_color yellow 'N/A') | "
+  fi
+
+  PS1="${PS1}\\w"
+
+  PS1="${PS1} ]\\n"
+
+  PS1="${PS1}${USER}@${HOSTNAME} "
+
+  if [[ "${status_code}" == 0 ]]; then
+    PS1="${PS1}$(_prompt_color green "$(printf "\\xe2\\x9c\\x93")") "
+  else
+    PS1="${PS1}$(_prompt_color red   "$(printf "\\xe2\\x9c\\x97")") "
+  fi
 }
 
 PROMPT_COMMAND=_set_prompt
