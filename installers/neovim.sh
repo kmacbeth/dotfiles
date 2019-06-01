@@ -1,3 +1,4 @@
+#!/bin/bash
 ################################################################################
 # Neovim configuration installer
 # @file: neovim.sh
@@ -9,7 +10,7 @@
 # @brief Main neovim configuration variables
 ################################################################################
 __NEOVIM_HOME="${XDG_CONFIG_HOME}/nvim"
-__NEOVIM_ROOT="$(dirname "$(readlink -f $0)")/neovim"
+__NEOVIM_ROOT="$(dirname "$(readlink -f "$0")")/neovim"
 __NEOVIM_FILES=(init.vim init_plugins.vim ftplugin)
 
 ################################################################################
@@ -31,11 +32,13 @@ neovim_get_install_info() {
     return 1
   fi
 
-  for neovim_file in ${__NEOVIM_FILES[@]}; do
+  for neovim_file in "${__NEOVIM_FILES[@]}"; do
 
     # Get current install files and resolve full link path
     local install_file="${__NEOVIM_HOME}/${neovim_file}"
-    local full_install_file="$(readlink -f "${install_file}")"
+    local full_install_file
+
+    full_install_file="$(readlink -f "${install_file}")"
 
     # When no file found at all, signal not installed.
     # When some files found, signal installed but needs update.
@@ -78,11 +81,13 @@ neovim_install() {
   # Create the vim home directory if it doesn't exist
   mkdir -p "${__NEOVIM_HOME}"
 
-  for neovim_file in ${__NEOVIM_FILES[@]}; do
+  for neovim_file in "${__NEOVIM_FILES[@]}"; do
 
     # Get current install files and resolve full link path
     local install_file="${__NEOVIM_HOME}/${neovim_file}"
-    local full_install_file="$(readlink -f "${install_file}")"
+    local full_install_file
+
+    full_install_file="$(readlink -f "${install_file}")"
 
     # If a file already exists but full path does not equal, backup the
     # file and link the new one. Otherwise, just link
@@ -90,16 +95,16 @@ neovim_install() {
       if [[ "${__NEOVIM_ROOT}/${neovim_file}" != "${full_install_file}" ]]; then
         # Process backup
         echo ">>> Saving backup ${neovim_file} in ~/.backup"
-        cp ${full_install_file} ~/.backup
+        cp "${full_install_file}" ~/.backup
 
         # Link new file
         echo ">> Linking newer ${full_install_file}"
-        ln -sf "${__NEOVIM_ROOT}/${neovim_file}" ${full_install_file}
+        ln -sf "${__NEOVIM_ROOT}/${neovim_file}" "${full_install_file}"
       fi
     else
       # Link file
       echo ">> Linking ${full_install_file}"
-      ln -sf "${__NEOVIM_ROOT}/${neovim_file}" ${full_install_file}
+      ln -sf "${__NEOVIM_ROOT}/${neovim_file}" "${full_install_file}"
     fi
   done
 

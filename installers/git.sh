@@ -1,41 +1,36 @@
 #!/bin/bash
 ################################################################################
-# Vim configuration installer
-# @file: vim.sh
+# Git configuration installer
+# @file: git.sh
 # @author: Martin Lafreniere
-# @date: 2018-12-28
+# @date: 2019-05-31
 ################################################################################
 
 ################################################################################
 # @brief Main vim configuration variables
 ################################################################################
-__VIM_HOME="${HOME}/.vim"
-__VIM_ROOT="$(dirname "$(readlink -f "$0")")/vim"
-__VIM_FILES=(vimrc)
+__GIT_HOME="${HOME}"
+__GIT_ROOT="$(dirname "$(readlink -f "$0")")/git"
+__GIT_FILES=(gitconfig)
 
 ################################################################################
 # @brief  Get installation information
 # @retval Installation information for menu and return code for installation
 #         status.
 ################################################################################
-vim_get_install_info() {
+git_get_install_info() {
 
-  local vim_file=""
+  local git_file=""
   local old_installed=0
   local not_installed=0
   local installed=0
 
-  echo "Minimal Vim Configuration"
+  echo "Git Configuration"
 
-  # Check vim home directory exists, otherwise return not installed
-  if [[ ! -d "${__VIM_HOME}" ]]; then
-    return 1
-  fi
-
-  for vim_file in "${__VIM_FILES[@]}"; do
+  for git_file in "${__GIT_FILES[@]}"; do
 
     # Get current install files and resolve full link path
-    local install_file="${__VIM_HOME}/${vim_file}"
+    local install_file="${__GIT_HOME}/.${git_file}"
     local full_install_file
 
     full_install_file="$(readlink -f "${install_file}")"
@@ -44,7 +39,7 @@ vim_get_install_info() {
     # When some files found, signal installed but needs update.
     # Otherwise, it is installed
     if [[ -e "${install_file}" ]]; then
-      if [[ "${__VIM_ROOT}/${vim_file}" != "${full_install_file}" ]]; then
+      if [[ "${__GIT_ROOT}/${git_file}" != "${full_install_file}" ]]; then
         old_installed=1
       else
         installed=1
@@ -70,40 +65,40 @@ vim_get_install_info() {
 }
 
 ################################################################################
-# @brief  Install vim configuration
+# @brief  Install git configuration
 ################################################################################
-vim_install() {
+git_install() {
 
-  local vim_file=""
+  local git_file=""
 
-  echo "Installing $(vim_get_install_info)"
+  echo "Installing $(git_get_install_info)"
 
-  # Create the vim home directory if it doesn't exist
-  mkdir -p "${__VIM_HOME}"
+  for git_file in "${__GIT_FILES[@]}"; do
 
-  for vim_file in "${__VIM_FILES[@]}"; do
-
-    local install_file="${__VIM_HOME}/${vim_file}"
+    # Get current install files and resolve full link path
+    local install_file="${__GIT_HOME}/.${git_file}"
     local full_install_file
 
     full_install_file="$(readlink -f "${install_file}")"
 
+    echo "${full_install_file}"
+
     # If a file already exists but full path does not equal, backup the
     # file and link the new one. Otherwise, just link
     if [[ -e "${install_file}" ]]; then
-      if [[ "${__VIM_ROOT}/${vim_file}" != "${full_install_file}" ]]; then
+      if [[ "${__GIT_ROOT}/${git_file}" != "${full_install_file}" ]]; then
         # Process backup
-        echo ">>> Saving backup ${vim_file} in ~/.backup"
+        echo ">>> Saving backup .${git_file} in ~/.backup"
         cp "${full_install_file}" ~/.backup
 
         # Link new file
         echo ">> Linking newer ${full_install_file}"
-        ln -sf "${__VIM_ROOT}/${vim_file}" "${full_install_file}"
+        ln -sf "${__GIT_ROOT}/${git_file}" "${full_install_file}"
       fi
     else
       # Link file
       echo ">> Linking ${full_install_file}"
-      ln -sf "${__VIM_ROOT}/${vim_file}" "${full_install_file}"
+      ln -sf "${__GIT_ROOT}/${git_file}" "${full_install_file}"
     fi
   done
 }

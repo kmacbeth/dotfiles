@@ -80,3 +80,7 @@ if filereadable(g:neovim_home."/init_plugins.vim")
   runtime init_plugins.vim
 endif
 
+" Diffs
+map <Leader>dl :diffget LOCAL<CR>
+map <Leader>db :diffget BASE<CR>
+map <Leader>dr :diffget REMOTE<CR>

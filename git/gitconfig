@@ -1,2 +1,15 @@
-# Set up vimdiff or nvim -d for diff/merge tools
-# https://gist.github.com/karenyyng/f19ff75c60f18b4b8149
+[diff]
+    tool = vimdiff
+
+[difftool "vimdiff"]
+    cmd = nvim -d $LOCAL $REMOTE
+
+[merge]
+    tool = vimdiff
+
+[mergetool]
+    keepBackup = false
+
+[mergetool "vimdiff"]
+    cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+

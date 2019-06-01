@@ -27,9 +27,9 @@ INSTALLERS_NAME=()
 #    [2] Yellow checkmark (installed but needs update)
 ################################################################################
 INSTALL_STATUS=()
-INSTALL_STATUS+=("\e[32m\342\234\223\e[39m")
-INSTALL_STATUS+=("\e[31m\342\234\227\e[39m")
-INSTALL_STATUS+=("\e[33m\342\234\223\e[39m")
+INSTALL_STATUS+=("\\e[32m\\342\\234\\223\\e[39m")
+INSTALL_STATUS+=("\\e[31m\\342\\234\\227\\e[39m")
+INSTALL_STATUS+=("\\e[33m\\342\\234\\223\\e[39m")
 
 
 ################################################################################
@@ -57,8 +57,11 @@ extract_file_basename() {
 get_installer_name() {
 
     local installer="$1"
-    local installer_basename="$(extract_file_basename "${installer}")"
-    local installer_name="$(remove_shell_extension ${installer_basename})"
+    local installer_basename
+    local installer_name
+
+    installer_basename="$(extract_file_basename "${installer}")"
+    installer_name="$(remove_shell_extension "${installer_basename}")"
 
     echo "${installer_name}"
 }
@@ -72,9 +75,9 @@ source_installers() {
 
   local installer=""
 
-  for installer in ${INSTALLERS[@]}; do
-    source ${installer}
-    INSTALLERS_NAME+=($(get_installer_name "${installer}"))
+  for installer in "${INSTALLERS[@]}"; do
+    source "${installer}"
+    INSTALLERS_NAME+=("$(get_installer_name "${installer}")")
   done
 }
 
@@ -90,23 +93,23 @@ select_installer() {
   local installer_info=""
   local installer_status=""
 
-  for installer_index in ${!INSTALLERS[@]}; do
+  for installer_index in "${!INSTALLERS[@]}"; do
 
     installer_name="${INSTALLERS_NAME[${installer_index}]}"
 
     # Get install information to display in menu. Return value is the current
     # installation status (installed, not installed, installed by needs update
-    installer_info="$(${installer_name}_get_install_info)"
+    installer_info="$("${installer_name}"_get_install_info)"
     installer_status="$?"
 
-    printf "%2u) Install %-30s [%b]\n" \
-        "$((${installer_index} + 1))" "${installer_info}" "${INSTALL_STATUS[${installer_status}]}"
+    printf "%2u) Install %-30s [%b]\\n" \
+        "$(("${installer_index}" + 1))" "${installer_info}" "${INSTALL_STATUS[${installer_status}]}"
   done
 
   # Get user input selection and check it is a valid number for selection.
   # If it does, call the appropriate install function.
   echo -n "Select> "
-  read user_input
+  read -r user_input
 
   if [[ "${user_input}" =~ ^[1-9][0-9]*$ ]]; then
     # Reduce to index installer name array
@@ -114,7 +117,7 @@ select_installer() {
 
     if (( user_input < INSTALLERS_SIZE )); then
       installer_name="${INSTALLERS_NAME[${user_input}]}"
-      ${installer_name}_install
+      "${installer_name}"_install
     fi
   fi
 }

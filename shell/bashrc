@@ -89,9 +89,6 @@ export VISUAL="${EDITOR}"
 ###       PERMISSIONS       ###
 ###############################
 alias ux='chmod u+x'
-alias nx='chmod -x+X'
-alias 755='chmod 755'
-alias 644='chmod 644'
 
 ###############################
 ###        SEARCHING        ###
@@ -117,12 +114,27 @@ _prompt_git_branch()
   __git_ps1 '%s' | grep '.{,20}'
 }
 
+_get_python_exec()
+{
+  local python_version
+
+  python_version="$(python --version 2>&1 | grep -oE "${_REGEX_VERSION}")"
+
+  if [[ "${python_version}" =~ 2.*.* ]] && command -v python3 > /dev/null; then
+    echo "python3"
+  else
+    echo "python"
+  fi
+}
+
 _prompt_python_version()
 {
-  if command -v python3 > /dev/null; then
-    python3 --version 2>&1 | grep -oE "${_REGEX_VERSION}"
+  local python_exec="$1"
+
+  if [[ "${python_exec}" == "python3" ]]; then
+      python3 --version 2>&1 | grep -oE "${_REGEX_VERSION}"
   else
-    python --version 2>&1 | grep -oE "${_REGEX_VERSION}"
+      python --version 2>&1 | grep -oE "${_REGEX_VERSION}"
   fi
 }
 
@@ -146,7 +158,8 @@ _set_prompt()
   local git_branch python_ver python_venv
 
   git_branch="$(_prompt_git_branch)"
-  python_ver="$(_prompt_python_version)"
+  python_exec="$(_get_python_exec)"
+  python_ver="$(_prompt_python_version "${python_exec}")"
   python_venv="${VIRTUAL_ENV##*/}"
   gcc_ver="$(_prompt_gcc_version)"
   clang_ver="$(_prompt_clang_version)"
@@ -160,7 +173,11 @@ _set_prompt()
     PS1="${PS1}$(_prompt_color yellow 'N/A') | "
   fi
 
-  PS1="${PS1}$(_prompt_color bright_white 'Python') "
+  if [[ "${python_exec}" == "python3" ]]; then
+    PS1="${PS1}$(_prompt_color bright_white 'Python3') "
+  else
+    PS1="${PS1}$(_prompt_color bright_white 'Python') "
+  fi
   PS1="${PS1}$(_prompt_color bright_blue "${python_ver}") "
   if [[ -n "${python_venv}" ]]; then
     PS1="${PS1}$(_prompt_color cyan "${python_venv}") | "
@@ -210,6 +227,7 @@ fi
 
 # Allow some level of customization
 if [[ -f ~/.bashrc.extras ]]; then
+  # shellcheck source=/dev/null
   source ~/.bashrc.extras
 fi
 

@@ -1,3 +1,4 @@
+#!/bin/bash
 ################################################################################
 # Shell (bash) configuration installer
 # @file: shell.sh
@@ -9,7 +10,7 @@
 # @brief Main shell configuration variables
 ################################################################################
 __SHELL_HOME="${HOME}"
-__SHELL_ROOT="$(dirname "$(readlink -f $0)")/shell"
+__SHELL_ROOT="$(dirname "$(readlink -f "$0")")/shell"
 __SHELL_FILES=(bashrc bash_profile inputrc)
 
 ################################################################################
@@ -26,11 +27,13 @@ shell_get_install_info() {
 
   echo "Bash Configuration"
 
-  for shell_file in ${__SHELL_FILES[@]}; do
+  for shell_file in "${__SHELL_FILES[@]}"; do
 
     # Get current install files and resolve full link path
     local install_file="${__SHELL_HOME}/.${shell_file}"
-    local full_install_file="$(readlink -f "${install_file}")"
+    local full_install_file=""
+
+    full_install_file="$(readlink -f "${install_file}")"
 
     # When no file found at all, signal not installed.
     # When some files found, signal installed but needs update.
@@ -70,11 +73,13 @@ shell_install() {
 
   echo "Installing $(shell_get_install_info)"
 
-  for shell_file in ${__SHELL_FILES[@]}; do
+  for shell_file in "${__SHELL_FILES[@]}"; do
 
     # Get current install files and resolve full link path
     local install_file="${__SHELL_HOME}/.${shell_file}"
-    local full_install_file="$(readlink -f "${install_file}")"
+    local full_install_file=""
+
+    full_install_file="$(readlink -f "${install_file}")"
 
     # If a file already exists but full path does not equal, backup the
     # file and link the new one. Otherwise, just link
@@ -82,16 +87,16 @@ shell_install() {
       if [[ "${__SHELL_ROOT}/${shell_file}" != "${full_install_file}" ]]; then
         # Process backup
         echo ">>> Saving backup .${shell_file} in ~/.backup"
-        cp ${full_install_file} ~/.backup
+        cp "${full_install_file}" ~/.backup
 
         # Link new file
         echo ">> Linking newer ${full_install_file}"
-        ln -sf "${__SHELL_ROOT}/${shell_file}" ${full_install_file}
+        ln -sf "${__SHELL_ROOT}/${shell_file}" "${full_install_file}"
       fi
     else
       # Link file
       echo ">> Linking ${full_install_file}"
-      ln -sf "${__SHELL_ROOT}/${shell_file}" ${full_install_file}
+      ln -sf "${__SHELL_ROOT}/${shell_file}" "${full_install_file}"
     fi
   done
 }
