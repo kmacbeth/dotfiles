@@ -9,7 +9,7 @@
 ################################################################################
 # @brief Main neovim configuration variables
 ################################################################################
-__NEOVIM_HOME="${XDG_CONFIG_HOME}/nvim"
+__NEOVIM_HOME="${HOME}/.config/nvim"
 __NEOVIM_ROOT="$(dirname "$(readlink -f "$0")")/neovim"
 __NEOVIM_FILES=(init.vim init_plugins.vim ftplugin)
 

@@ -6,10 +6,6 @@
 # @date: 2018-12-28
 ################################################################################
 
-# Standardize environment variables
-XDG_CONFIG_HOME="${HOME}/.config"
-XDG_DATA_HOME="${HOME}/.local"
-
 ################################################################################
 # @brief Installers
 # @description Get a list of installers script from the installers directory
@@ -35,15 +31,15 @@ INSTALL_STATUS+=("\\e[33m\\342\\234\\223\\e[39m")
 ################################################################################
 # @brief Helper functions
 ################################################################################
-remove_shell_extension() {
-
+remove_shell_extension()
+{
   local filename="$1"
 
   echo "${filename%*.sh}"
 }
 
-extract_file_basename() {
-
+extract_file_basename()
+{
   local filename="$1"
 
   echo "${filename##*/}"
@@ -54,8 +50,8 @@ extract_file_basename() {
 # @param  $1 Installer filename with full path
 # @retval Installer name
 ################################################################################
-get_installer_name() {
-
+get_installer_name()
+{
     local installer="$1"
     local installer_basename
     local installer_name
@@ -71,11 +67,12 @@ get_installer_name() {
 # @brief  Source all installers script
 # @retval Fills the $INSTALLERS_NAME global array
 ################################################################################
-source_installers() {
-
+source_installers()
+{
   local installer=""
 
   for installer in "${INSTALLERS[@]}"; do
+    # shellcheck source=/dev/null
     source "${installer}"
     INSTALLERS_NAME+=("$(get_installer_name "${installer}")")
   done
@@ -87,11 +84,14 @@ source_installers() {
 #    using a number. Any other key is treated as the exit key. Once a valid
 #    key is select, it calles the appropriate installer install function.
 ################################################################################
-select_installer() {
+select_installer()
+{
 
   local installer_name=""
   local installer_info=""
   local installer_status=""
+
+  echo "Installers:"
 
   for installer_index in "${!INSTALLERS[@]}"; do
 
@@ -123,17 +123,84 @@ select_installer() {
 }
 
 ################################################################################
+# @brief Call all installer specified in argument
+################################################################################
+call_installer()
+{
+  local installer_name=""
+  local installer_info=""
+  local installer_status=""
+
+  for installer_index in "${!INSTALLERS[@]}"; do
+
+    installer_name="${INSTALLERS_NAME[${installer_index}]}"
+
+    for installer in "$@"; do
+      if [[ "${installer_name}" == "${installer}" ]]; then
+
+        # Get install information to display in menu. Return value is the current
+        # installation status (installed, not installed, installed by needs update
+        installer_info="$("${installer_name}"_get_install_info)"
+        installer_status="$?"
+
+        "${installer_name}"_install
+      fi
+    done
+
+  done
+}
+
+################################################################################
 # @brief Main install script function
 ################################################################################
-main() {
-
+main()
+{
   # Ensure the backup directory exists for copying old installed files
   mkdir -p ~/.backup
 
   source_installers
-  select_installer
 
+  if [[ -z "$*" ]]; then
+    select_installer
+  else
+    call_installer "$@"
+  fi
 }
 
+################################################################################
+# @brief Show installers
+################################################################################
+show_installers()
+{
+  local installer
+  local index=1
+
+  echo "Installers:"
+
+  for installer in "${INSTALLERS[@]}"; do
+    echo " $((index++))) $(get_installer_name "${installer}")"
+  done
+  echo ""
+
+  exit 0
+}
+
+################################################################################
+# @brief Usage
+################################################################################
+usage()
+{
+  echo -e "Usage: $0 [installers]\\n" 1>&2; exit 0
+}
+
+while getopts ":hi" option; do
+  case "${option}" in
+    i) show_installers; exit ;;
+    h) usage ;;
+    *) ;;
+  esac
+done
+
+shift $((OPTIND-1))
 main "$@"
 
