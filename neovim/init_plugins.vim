@@ -31,6 +31,9 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'merged': 0 }
 " Python
 Plug 'ncm2/ncm2-jedi'
 
+" Tags
+Plug 'ludovicchabant/vim-gutentags'
+
 " Linting & Syntax Checking
 Plug 'neomake/neomake'
 
@@ -67,7 +70,10 @@ let g:ncm2_pyclang#library_path = '/usr/lib/x86_64-linux-gnu/libclang-8.so.1'
 call neomake#configure#automake('nrwi', 500)
 let g:neomake_python_exe = '/usr/bin/python3'
 
-" Thmes
+" Tags
+set statusline+=%{gutentags#statusline()}
+
+" Themes
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
