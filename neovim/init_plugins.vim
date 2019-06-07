@@ -12,6 +12,7 @@ call plug#begin(g:neovim_home . "/plugged")
 
 " Files and buffers
 Plug 'jlanzarotta/bufexplorer'
+Plug 'Yggdroot/indentLine'
 
 " General Completion
 Plug 'roxma/nvim-yarp'
@@ -40,8 +41,6 @@ Plug 'neomake/neomake'
 " Themes
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
-"Plug 'luochen1990/rainbow'
-
 
 call plug#end()
 
@@ -53,6 +52,11 @@ let g:netrw_localrmdir = 'rm -f'
 
 nnoremap <Leader>fe :Lexplore<CR>
 
+let g:indentLine_color_term = get(g:, 'indentLine_color_term', 239)
+let g:indentLine_char = get(g:, 'indentLine_char', '┊')
+let g:indentLine_concealcursor = 'inc' "'niv'
+let g:indentLine_conceallevel = 2
+let g:indentLine_fileTypeExclude = ['help', 'man', 'netrw']
 
 " Completion engine setup
 augroup vimrc
@@ -79,14 +83,6 @@ if !exists('g:airline_symbols')
 endif
 let g:airline_left_sep = '►'
 let g:airline_right_sep = '◄'
-
-" let g:rainbow_active = 1
-" let g:rainbow_conf = {}
-" let g:rainbow_conf['guifgs']      = ['#b58900', '#268bd2', '#cb4b16', '#d33682']
-" let g:rainbow_conf['ctermfgs']    = ['3', '4', '9', '5']
-" let g:rainbow_conf['operators']   = '_,_'
-" let g:rainbow_conf['parentheses'] = ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold']
-" let g:rainbow_conf['separately']  = { 'cmake': 0, 'xml': 0 }
 
 set background=dark
 colorscheme gruvbox
