@@ -25,6 +25,7 @@ set fileformat=unix
 " Vim colors
 set background=dark
 colorscheme peachpuff
+set termguicolors
 
 " Status line, line numbering and command line.
 set number
