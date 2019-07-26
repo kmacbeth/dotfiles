@@ -7,6 +7,7 @@
 "
 " Free to use, modify or distribute. No warranties.
 """
+
 " Plugins
 call plug#begin(g:neovim_home . "/plugged")
 
@@ -31,8 +32,14 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'merged': 0 }
 " Python
 Plug 'ncm2/ncm2-jedi'
 
+" Rust
+Plug 'rust-lang/rust.vim'
+Plug 'ncm2/ncm2-racer'
+"Plug 'racer-rust/vim-racer'
+
 " Tags
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'majutsushi/tagbar'
 
 " Linting & Syntax Checking
 Plug 'neomake/neomake'
@@ -40,7 +47,6 @@ Plug 'neomake/neomake'
 " Themes
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
-"Plug 'luochen1990/rainbow'
 
 
 call plug#end()
@@ -52,7 +58,6 @@ let g:netrw_liststyle = 3
 let g:netrw_localrmdir = 'rm -f'
 
 nnoremap <Leader>fe :Lexplore<CR>
-
 
 " Completion engine setup
 augroup vimrc
@@ -72,6 +77,7 @@ let g:neomake_python_exe = '/usr/bin/python3'
 
 " Tags
 set statusline+=%{gutentags#statusline()}
+nnoremap <Leader>tt :TagbarToggle<CR>
 
 " Themes
 if !exists('g:airline_symbols')
@@ -79,14 +85,6 @@ if !exists('g:airline_symbols')
 endif
 let g:airline_left_sep = '►'
 let g:airline_right_sep = '◄'
-
-" let g:rainbow_active = 1
-" let g:rainbow_conf = {}
-" let g:rainbow_conf['guifgs']      = ['#b58900', '#268bd2', '#cb4b16', '#d33682']
-" let g:rainbow_conf['ctermfgs']    = ['3', '4', '9', '5']
-" let g:rainbow_conf['operators']   = '_,_'
-" let g:rainbow_conf['parentheses'] = ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold']
-" let g:rainbow_conf['separately']  = { 'cmake': 0, 'xml': 0 }
 
 set background=dark
 colorscheme gruvbox
