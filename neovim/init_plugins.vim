@@ -7,6 +7,7 @@
 "
 " Free to use, modify or distribute. No warranties.
 """
+
 " Plugins
 call plug#begin(g:neovim_home . "/plugged")
 
@@ -32,8 +33,14 @@ Plug 'octol/vim-cpp-enhanced-highlight', { 'merged': 0 }
 " Python
 Plug 'ncm2/ncm2-jedi'
 
+" Rust
+Plug 'rust-lang/rust.vim'
+Plug 'ncm2/ncm2-racer'
+"Plug 'racer-rust/vim-racer'
+
 " Tags
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'majutsushi/tagbar'
 
 " Linting & Syntax Checking
 Plug 'neomake/neomake'
@@ -41,9 +48,6 @@ Plug 'neomake/neomake'
 " Themes
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
-
-" Other
-Plug 'vimwiki/vimwiki'
 
 call plug#end()
 
@@ -78,6 +82,7 @@ let g:neomake_python_exe = '/usr/bin/python3'
 
 " Tags
 set statusline+=%{gutentags#statusline()}
+nnoremap <Leader>tt :TagbarToggle<CR>
 
 " Themes
 if !exists('g:airline_symbols')
