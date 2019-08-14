@@ -49,7 +49,6 @@ Plug 'neomake/neomake'
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 
-
 call plug#end()
 
 " Files and buffers
@@ -61,8 +60,7 @@ let g:netrw_localrmdir = 'rm -f'
 nnoremap <Leader>fe :Lexplore<CR>
 
 let g:indentLine_color_term = get(g:, 'indentLine_color_term', 239)
-let g:indentLine_char = get(g:, 'indentLine_char', '┊')
-let g:indentLine_concealcursor = 'inc' "'niv'
+let g:indentLine_concealcursor = 'inc'
 let g:indentLine_conceallevel = 2
 let g:indentLine_fileTypeExclude = ['help', 'man', 'netrw']
 

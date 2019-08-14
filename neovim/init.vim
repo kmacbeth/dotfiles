@@ -85,3 +85,6 @@ endif
 map <Leader>dl :diffget LOCAL<CR>
 map <Leader>db :diffget BASE<CR>
 map <Leader>dr :diffget REMOTE<CR>
+
+" Terminal
+tnoremap <C-w> <C-\><c-n><C-w>
