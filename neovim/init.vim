@@ -76,6 +76,8 @@ set mouse=a
 nnoremap <space> <nop>
 let mapleader = " "
 
+let cinoptions=N-s
+
 " Vim settings based on workstation
 if filereadable(g:neovim_home."/init_plugins.vim")
   runtime init_plugins.vim
