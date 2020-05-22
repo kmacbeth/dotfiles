@@ -1,6 +1,13 @@
 [[ -z "${PS1}" ]] && return 0
 
-PATH="$HOME/.cargo/bin:${HOME}/.local/bin:${HOME}/bin:${PATH}"
+export PATH="${HOME}/.local/bin:${HOME}/bin:${PATH}"
+
+export PYENV_ROOT="${HOME}/.pyenv"
+if [[ -d "${PYENV_ROOT}" ]]; then
+  export PATH="${PYENV_ROOT}/bin:$PATH"
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
 
 ###############################
 ###        HISTORY          ###
@@ -89,6 +96,7 @@ export VISUAL="${EDITOR}"
 ###       PERMISSIONS       ###
 ###############################
 alias ux='chmod u+x'
+alias pwned='sudo chown -R $USER:$GROUPS'
 
 ###############################
 ###        SEARCHING        ###
