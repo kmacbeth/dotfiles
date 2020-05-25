@@ -74,13 +74,13 @@ inoremap <expr> <tab> (pumvisible() ? "\<c-n>" : "\<tab>")
 inoremap <expr> <s-tab> (pumvisible() ? "\<C-p>" : "\<s-tab>")
 
 " C/C++
-let g:ncm2_pyclang#library_path = '/usr/lib/x86_64-linux-gnu/libclang-8.so.1'
+let g:ncm2_pyclang#library_path = '/usr/lib/x86_64-linux-gnu/libclang-7.so'
 
 " Linting and syntax checking
 call neomake#configure#automake('nrwi', 500)
 
-let g:neomake_cpp_clang_args = ['-std=c++14', '-fsyntax-only', '-Wall', '-Wextra', '--config .clang']
-let g:neomake_python_exe = '/usr/bin/python3'
+let g:neomake_cpp_clang_args = ['-std=c++11', '-fsyntax-only', '-Wall', '-Wextra', '--config .clang']
+let g:neomake_python_exe = '/home/mlafreniere/.pyenv/shims/python'
 
 " Tags
 set statusline+=%{gutentags#statusline()}

@@ -81,6 +81,11 @@ git_install() {
 
     full_install_file="$(readlink -f "${install_file}")"
 
+    # Skip the gituser file, to be manually handled.
+    if [[ "${git_file}" == "gituser" ]]; then
+      continue
+    fi
+
     # If a file already exists but full path does not equal, backup the
     # file and link the new one. Otherwise, just link
     if [[ -e "${install_file}" ]]; then
